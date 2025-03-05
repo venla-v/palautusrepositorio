@@ -25,19 +25,35 @@ const App = () => {
   const taulukko = new Array(anecdotes.length).fill(0);
   const [votes, setVotes] = useState(taulukko)
   const [selected, setSelected] = useState(0)
+  const [suurin, setSuurin] = useState(0)
 
   const registerVote = () => {
     const copy = [...votes]
     copy[selected] += 1
     setVotes(copy)
+    
+    let isoinVote = copy[0]
+    let isoinIndex = 0
+
+    for ( let i = 0; i < copy.length; i++ ) {
+      if (copy[i] >= isoinVote) {
+        isoinVote = copy[i]
+        isoinIndex = i
+      }
+    }
+    setSuurin(isoinIndex)
   }
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
-      <p>{votes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
       <Button handleClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} text='next anecdote'/>
       <Button handleClick={(registerVote)} text='vote'/>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[suurin]}</p>
+      <p>has {votes[suurin]} votes</p>
     </div>
   )
 }
