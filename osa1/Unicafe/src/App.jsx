@@ -17,6 +17,14 @@ const Button = ({ onClick, text }) => (
 const Statistics = (props) => {
   const avg = ((props.good-props.bad)/props.all)
   const pos = (props.good/props.all)*100
+  
+  if (props.all === 0) {
+    return (
+      <div>
+        No feedback given
+      </div>
+    )
+  }
 
   return (
     <>
