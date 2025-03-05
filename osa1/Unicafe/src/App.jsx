@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 const StatisticLine = ({ value, texti }) => {
   return (
-    <div>
-      <p>{texti} {value}</p>
-    </div>
+    <tr>
+      <td>{texti} {value}</td>
+    </tr>
   )
 }
 
@@ -18,8 +18,8 @@ const Button = ({ handleClick, text }) => {
 
 const Statistics = (props) => {
   const all = props.good + props.bad + props.neutral
-  const avg = ((props.good-props.bad)/all)
-  const pos = (props.good/all)*100
+  const avg = ((props.good-props.bad)/all).toFixed(1)
+  const pos = ((props.good/all)*100).toFixed(1)
   
   if (all === 0) {
     return (
@@ -30,14 +30,16 @@ const Statistics = (props) => {
   }
 
   return (
-    <>
-    <StatisticLine value={props.good} texti='good' />
-    <StatisticLine value={props.neutral} texti='neutral' />
-    <StatisticLine value={props.bad} texti='bad' />
-    <StatisticLine value={all} texti='all' />
-    <StatisticLine value={avg} texti='average' />
-    <StatisticLine value={pos+'%'} texti='positive' />
-    </>
+    <table>
+    <tbody>
+      <StatisticLine value={props.good} texti='good' />
+      <StatisticLine value={props.neutral} texti='neutral' />
+      <StatisticLine value={props.bad} texti='bad' />
+      <StatisticLine value={props.all} texti='all' />
+      <StatisticLine value={avg} texti='average' />
+      <StatisticLine value={pos + '%'} texti='positive' />
+    </tbody>
+  </table>
   )
 }
 
@@ -55,6 +57,7 @@ const App = () => {
        <h1>statistics</h1>
        <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
+    
   )
 }
 
