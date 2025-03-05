@@ -11,7 +11,7 @@ const Total = (props) => {
   console.log(props)
   return (
     <div>
-    
+    <p>Number of exercises {props.exercises}</p>
     </div>
   )
 }
@@ -34,6 +34,7 @@ const App = () => {
   const exercises2 = 7
   const part3 = 'State of a component'
   const exercises3 = 14
+  const exercises = (exercises1 + exercises2 + exercises3)
 
   return (
     <div>
@@ -41,7 +42,7 @@ const App = () => {
       <Content part1={part1} exercises1={exercises1}/>
       <Content part2={part2} exercises2={exercises2}/>
       <Content part3={part3} exercises3={exercises3}/>
-     
+      <Total exercises={exercises}/>
     </div>
   )
 }
