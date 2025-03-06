@@ -1,4 +1,18 @@
 
+const Total = ({ parts }) => {
+  console.log(parts)
+  let noOfExercises = 0
+
+  parts.forEach(p => {
+    noOfExercises += p.exercises
+  })
+
+  return (
+    <b>
+     total of {noOfExercises} exercises
+    </b>
+  )
+}
 
 const Part = ({name, exercises }) => {
   return (
@@ -9,15 +23,18 @@ const Part = ({name, exercises }) => {
 }
 
 const Content = ({ parts }) => {
+
   return (
     <div>
       <ul>
         {parts.map(part => 
           <Part key={part.id} name={part.name} exercises={part.exercises} />
         )}
+          <Total parts={parts} />
       </ul>
     </div>
   )
+  
 }
 
 const Header = ({ course }) => {
@@ -57,8 +74,12 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
-      
     ]
   }
 
