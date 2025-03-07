@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Persons = ({ person }) => {
   return <li>{person.name} {person.number}</li>
@@ -19,24 +20,19 @@ const PersonForm = ({onSubmit, name, handleNameChange, number, handleNumberChang
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', 
-      number: '123 456 7890'
-    },
-    { name: 'Mato Matala', 
-      number: '098 765 4321'
-    },
-    { name: 'Lari Lehmä', 
-      number: '040 040 0400'
-    },
-    { name: 'Kevin Minion', 
-      number: '999 999 9999'
-    }
-  ]) 
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
 
+  useEffect(() => {
+    console.log('effect')
+    axios.get('http://localhost:3001/persons').then((response) => {
+      console.log('promise fulfilled')
+      setPersons(response.data)
+    })
+  }, [])
+  console.log('render', persons.length, 'persons')
 
   const addNameNumber = (event) => {
     console.log(newName)
