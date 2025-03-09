@@ -51,10 +51,13 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(nameNumber))
-      setNewName('')
-      setNewNumber('')
-    }
+
+      axios.post('http://localhost:3001/persons', nameNumber).then((response) => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
+      }
   }
 
   const personsToShow = search
@@ -89,7 +92,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {personsToShow.map((person) => (
-          <Persons key={person.name} person={person} />
+          <Persons key={person.id}  person={person}  />
         ))}
       </ul>
     </div>
