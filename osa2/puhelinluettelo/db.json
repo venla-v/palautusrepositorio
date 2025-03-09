@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "123 456 7890",
-      "id": "1"
-    },
-    {
       "name": "Mato Matala",
       "number": "098 765 4321",
       "id": "2"
@@ -16,19 +11,14 @@
       "id": "3"
     },
     {
+      "id": "605b",
       "name": "Kevin Minion",
-      "number": "999 999 9999",
-      "id": "4"
+      "number": "999 999 9999"
     },
     {
-      "id": "1ff5",
-      "name": "miu",
-      "number": "000 000"
-    },
-    {
-      "id": "68d2",
-      "name": "mauu",
-      "number": "000"
+      "id": "bccf",
+      "name": "Paukka Pallopää",
+      "number": "789 789 7890"
     }
   ]
 }

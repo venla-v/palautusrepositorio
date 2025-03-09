@@ -3,8 +3,13 @@ import axios from 'axios'
 import personService from './services/persons'
 
 
-const Persons = ({ person }) => {
-  return <li>{person.name} {person.number}</li>
+const Persons = ({ person, deletePerson }) => {
+  return (<>
+  <li>{person.name} {person.number}
+  <button onClick={() => deletePerson(person.id, person)}>del</button>
+        </li>
+      </>
+  )
 }
 
 const Filter = ({ handleSearch }) => {
@@ -62,6 +67,22 @@ const App = () => {
       }
   }
 
+  const deletePerson = (id, person) => {
+    console.log(id.name)
+
+  if (window.confirm(`Are you sure you want to delete ${person.name}?`)){
+
+    axios.delete(`http://localhost:3001/persons/${id}`)
+  .then(() => {
+    setPersons(persons.filter(person => person.id !== id))
+    console.log(`Deleted person ID ${id}`);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+  }
+}
+
   const personsToShow = search
     ? persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
     : persons
@@ -94,7 +115,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {personsToShow.map((person) => (
-          <Persons key={person.id}  person={person}  />
+          <Persons key={person.id}  person={person} deletePerson = {deletePerson}  />
         ))}
       </ul>
     </div>
