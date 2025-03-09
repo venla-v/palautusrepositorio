@@ -2,13 +2,8 @@
   "persons": [
     {
       "name": "Mato Matala",
-      "number": "098 765 4321",
+      "number": "121 121 1212",
       "id": "2"
-    },
-    {
-      "name": "Lari Lehmä",
-      "number": "040 040 0400",
-      "id": "3"
     },
     {
       "id": "605b",
@@ -16,9 +11,14 @@
       "number": "999 999 9999"
     },
     {
-      "id": "bccf",
+      "id": "46e7",
       "name": "Paukka Pallopää",
-      "number": "789 789 7890"
+      "number": "000 000 0000"
+    },
+    {
+      "id": "2e45",
+      "name": "Pupsi Pupukka",
+      "number": "111 111 1111"
     }
   ]
 }

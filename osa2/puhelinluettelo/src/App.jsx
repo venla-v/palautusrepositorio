@@ -51,7 +51,19 @@ const App = () => {
     console.log(found)
     
     if (found) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook. Want to replace the number?`)) {
+        axios.put(`http://localhost:3001/persons/${found.id}`, { name: found.name, number: newNumber })
+        .then((response) => {
+          console.log(response)
+            const newPersons = persons.filter(person => person.id !== found.id);
+            setPersons(newPersons.concat(response.data));
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
     }
     else {
       const nameNumber = {
