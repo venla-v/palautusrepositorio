@@ -5,6 +5,7 @@ const Persons = ({ person, deletePerson }) => {
           </li>
         </>
     )
+    
   }
 
   export default Persons

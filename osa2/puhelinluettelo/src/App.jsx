@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
 import Notification from './components/Notification'
+import Error from './components/Error'
 import Persons from './components/Persons'
 
 
@@ -25,15 +26,14 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
   const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    console.log('effect')
+
     axios.get('http://localhost:3001/persons').then((response) => {
-      console.log('promise fulfilled')
       setPersons(response.data)
     })
   }, [])
-  console.log('render', persons.length, 'persons')
 
   const addNameNumber = (event) => {
     console.log(newName)
@@ -60,7 +60,12 @@ const App = () => {
             }, 5000)
           })
           .catch(error => {
-            console.error(error);
+            setErrorMessage(
+              `Person '${newName}' was already removed from server`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           });
       }
     }
@@ -123,6 +128,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={message} />
+      <Error message={errorMessage} />
       <div>
         search: <Filter search={search} handleSearch={handleSearch}/>
       </div>

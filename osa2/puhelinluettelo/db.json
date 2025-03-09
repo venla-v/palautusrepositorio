@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Kevin Minion",
-      "number": "999 999 9999",
-      "id": "605b"
-    },
-    {
       "name": "Paukka Pallopää",
       "number": "111 222 3333",
       "id": "46e7"
