@@ -1,16 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import Persons from './components/Persons'
 
-
-const Persons = ({ person, deletePerson }) => {
-  return (<>
-  <li>{person.name} {person.number}
-  <button onClick={() => deletePerson(person.id, person)}>del</button>
-        </li>
-      </>
-  )
-}
 
 const Filter = ({ handleSearch }) => {
   return <input onChange={handleSearch}/>
@@ -31,6 +24,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -59,6 +53,11 @@ const App = () => {
             setPersons(newPersons.concat(response.data));
             setNewName('')
             setNewNumber('')
+            
+            setMessage(`${newName} number replaced`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
           .catch(error => {
             console.error(error);
@@ -76,6 +75,10 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      setMessage(`${newName} added`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
       }
   }
 
@@ -88,6 +91,11 @@ const App = () => {
   .then(() => {
     setPersons(persons.filter(person => person.id !== id))
     console.log(`Deleted person ID ${id}`);
+
+    setMessage(`${person.name} deleted`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   })
   .catch(error => {
     console.error(error);
@@ -114,6 +122,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <div>
         search: <Filter search={search} handleSearch={handleSearch}/>
       </div>
