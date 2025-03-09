@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
+
 
 const Persons = ({ person }) => {
   return <li>{person.name} {person.number}</li>
@@ -52,8 +54,8 @@ const App = () => {
         number: newNumber
       }
 
-      axios.post('http://localhost:3001/persons', nameNumber).then((response) => {
-        setPersons(persons.concat(response.data))
+      personService.create(nameNumber).then((returnedNameNumber) => {
+        setPersons(persons.concat(returnedNameNumber))
         setNewName('')
         setNewNumber('')
       })
