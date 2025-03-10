@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import countryService from './services/countries'
+import weatherService from './services/weather'
 
 const Image = ( {url} ) => {
   return (
@@ -24,7 +25,10 @@ const Countries = ({ country, showInfo }) => {
     console.log(country[0].languages)
 
     return (
-      <CountryInfo country={country[0]}/>
+      <>
+        <CountryInfo country={country[0]}/>
+       
+      </>
     )
   }
 
@@ -39,7 +43,7 @@ const Countries = ({ country, showInfo }) => {
 
 const CountryInfo = ({ country }) => {
   const countryLanguages = Object.values(country.languages);
-
+  console.log(country.capital)
   return (
     <div>
       <h2>{country.name.common}</h2>
@@ -54,15 +58,58 @@ const CountryInfo = ({ country }) => {
       <div>
         <Image url={country.flags.png} />
       </div>
+      <div>
+        <Weather capital={country.capital} />
+      </div>
     </div>
-  );
+  )
 };
+
+const Weather = ({ capital }) => {
+  console.log(capital)
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+      weatherService
+        .getWeather(capital)
+        .then(response => setWeather(response))
+  }, [capital]);
+  console.log(weather)
+
+  
+  if (weather !== null) {
+    let temp = weather.main.temp - 273.15
+    temp = temp.toFixed(2)
+
+    let iconBaseUrl = 'https://openweathermap.org/img/wn/'
+    let iconCode = weather.weather[0].icon
+  
+  return (
+    
+    <>
+    <h2>Weather in {capital}</h2>
+    <div>Temperature: {temp} Celsius</div>
+    <div><Image url={iconBaseUrl + iconCode + '@2x.png'} /></div>
+    <div>Wind: {weather.wind.speed} m/s</div>
+    </>
+  )
+}
+return (
+    
+  <>
+  <div>Temperature:</div>
+  <div>Wind: </div>
+  </>
+)
+};
+
 
 
 const App = () => {
   const [search, setSearch] = useState('')
   const [countries, setCountries] = useState([])
   const [shown, setShown] = useState(null);
+  
 
 
   useEffect(() => {
