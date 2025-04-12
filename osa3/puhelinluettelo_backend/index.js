@@ -50,24 +50,36 @@ let persons = [
   })
 
   const generateId = () => {
-    const maxId = persons.length > 0
-      ? Math.max(...persons.map(n => Number(n.id)))
-      : 0
-    return String(maxId + 1)
+    const personid = Math.floor(Math.random() * 10000)
+    return String(personid)
   }
   
   app.post('/api/persons', (request, response) => {
     const body = request.body
   
-    if (!body.content) {
+    if (!body.name) {
       return response.status(400).json({ 
-        error: 'content missing' 
+        error: 'name missing' 
       })
+    }
+
+    if (!body.number) {
+        return response.status(400).json({ 
+          error: 'number missing' 
+        })
+      }
+
+    for (let i = 0; i < persons.length; i++) {
+        if (persons[i].name === body.name) {
+            return response.status(400).json({ 
+                error: 'name must be unique' 
+        })
+        }
     }
   
     const person = {
-      content: body.content,
-      important: body.important || false,
+      name: body.name,
+      number: body.number,
       id: generateId(),
     }
   
