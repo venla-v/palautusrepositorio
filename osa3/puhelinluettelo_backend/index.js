@@ -1,6 +1,8 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -25,12 +27,19 @@ let persons = [
     }
   ]
 
-  app.get('/info', (request, response) => {
-    const nro = persons.length
-    const date = new Date()
-    response.send(`<p>Phonebook has info for ${nro} people</p>
-        <p>${date}</p>`)
+  const logger= morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms',
+      req.body.name,
+      req.body.number
+    ].join(' ')
   })
+
+
   
   app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
@@ -87,6 +96,7 @@ let persons = [
   
     response.json(person)
   })
+
 
   const PORT = 3001
   app.listen(PORT, () => {
