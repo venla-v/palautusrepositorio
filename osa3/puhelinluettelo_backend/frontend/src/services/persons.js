@@ -22,8 +22,13 @@ const update = (id, nameNumber) => {
   return request.then((response) => response.data)
 }
 
+const del = (id) => {
+  return axios.delete(`${baseUrl}/${id}`)
+}
+
 export default {
   getAll,
   create,
   update,
+  del
 }

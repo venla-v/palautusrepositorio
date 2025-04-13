@@ -91,8 +91,7 @@ const App = () => {
 
   if (window.confirm(`Are you sure you want to delete ${person.name}?`)){
 
-    axios.delete(`/api/persons/${id}`)
-  .then(() => {
+   personService.del(id).then(() => {
     setPersons(persons.filter(person => person.id !== id))
     console.log(`Deleted person ID ${id}`);
 
