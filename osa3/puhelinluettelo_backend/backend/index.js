@@ -3,8 +3,9 @@ const morgan = require('morgan')
 const app = express()
 app.use(express.json())
 
-
+const Person = require('./models/person.js')
 app.use(express.static('dist'))
+
 
 const logger= morgan(function (tokens, req, res) {
   return [
@@ -45,7 +46,9 @@ let persons = [
 
   
   app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person.find({}).then((people) => {
+      res.json(people)
+    })
   })
  
 
