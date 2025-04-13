@@ -45,9 +45,9 @@ const App = () => {
     
     if (found) {
       if (window.confirm(`${newName} is already added to phonebook. Want to replace the number?`)) {
-        axios.put(`/api/persons/${found.id}`, { name: found.name, number: newNumber })
+ 
+        personService.update(found.id, { name: found.name, number: newNumber })
         .then((response) => {
-          console.log(response)
             const newPersons = persons.filter(person => person.id !== found.id);
             setPersons(newPersons.concat(response.data));
             setNewName('')
