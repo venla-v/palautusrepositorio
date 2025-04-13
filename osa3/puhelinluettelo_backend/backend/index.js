@@ -2,6 +2,21 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+const cors = require('cors')
+
+const logger= morgan(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms',
+    JSON.stringify(req.body)
+  ].join(' ')
+})
+
+app.use(logger)
+app.use(cors())
 
 let persons = [
     {
@@ -26,18 +41,11 @@ let persons = [
     }
   ]
 
-  const logger= morgan(function (tokens, req, res) {
-    return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, 'content-length'), '-',
-      tokens['response-time'](req, res), 'ms',
-      JSON.stringify(req.body)
-    ].join(' ')
+  
+  app.get('/api/persons', (req, res) => {
+    res.json(persons)
   })
-
-  app.use(logger)
+ 
 
   app.get('/info', (request, response) => {
     const nro = persons.length
