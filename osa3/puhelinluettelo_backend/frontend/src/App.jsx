@@ -29,8 +29,8 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    personService.getAll().then(responsedata => {
-      setPersons(responsedata)
+    personService.getAll().then(all => {
+      setPersons(all)
     })
   }, [])
 
@@ -139,9 +139,9 @@ const App = () => {
       </div>   
       <h2>Numbers</h2>
       <ul>
-        {personsToShow.map((person) => (
-          <Persons key={person.id}  person={person} deletePerson = {deletePerson}  />
-        ))}
+      {personsToShow.map(person => (
+        <Persons key={person.id} person={person} deletePerson={deletePerson} />
+      ))}
       </ul>
     </div>
   )
