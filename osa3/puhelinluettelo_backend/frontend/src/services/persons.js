@@ -4,12 +4,7 @@ const baseUrl = '/api/persons'
 
 const getAll = () => {
   const request = axios.get(baseUrl)
-  const nonExisting = {
-    id: 10000,
-    name: 'Pöllö Pallero',
-    number: '010 010 0100',
-  }
-  return request.then((response) => response.data.concat(nonExisting))
+  return request.then((response) => response.data)
 }
 
 const create = (nameNumber) => {
