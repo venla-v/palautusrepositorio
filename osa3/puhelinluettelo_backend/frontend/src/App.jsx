@@ -45,7 +45,7 @@ const App = () => {
     
     if (found) {
       if (window.confirm(`${newName} is already added to phonebook. Want to replace the number?`)) {
-        axios.put(`http://localhost:3001/api/persons/${found.id}`, { name: found.name, number: newNumber })
+        axios.put(`/api/persons/${found.id}`, { name: found.name, number: newNumber })
         .then((response) => {
           console.log(response)
             const newPersons = persons.filter(person => person.id !== found.id);
@@ -91,7 +91,7 @@ const App = () => {
 
   if (window.confirm(`Are you sure you want to delete ${person.name}?`)){
 
-    axios.delete(`http://localhost:3001/api/persons/${id}`)
+    axios.delete(`/api/persons/${id}`)
   .then(() => {
     setPersons(persons.filter(person => person.id !== id))
     console.log(`Deleted person ID ${id}`);
