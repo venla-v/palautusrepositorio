@@ -1,11 +1,11 @@
 require('dotenv').config()
 const express = require('express')
-const Person = require('./models/person')
 const morgan = require('morgan')
+const Person = require('./models/person')
 const app = express()
-app.use(express.json())
 
 app.use(express.static('dist'))
+app.use(express.json())
 
 
 const logger= morgan(function (tokens, req, res) {
@@ -131,6 +131,7 @@ let persons = [
         })
         }
     }
+    
   
     const person = new Person({
       name: body.name,
