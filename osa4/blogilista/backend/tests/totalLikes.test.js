@@ -64,6 +64,16 @@ const blogs = [
     }  
   ]
 
+
+    const empty = [
+      
+  ]
+  
+test('return amount of likes', () => {
+    const result = listHelper.totalLikes(empty)
+    assert.deepStrictEqual(result, 0)
+})
+
 test('return amount of likes', () => {
   const result = listHelper.totalLikes(blogs)
   assert.strictEqual(result, 36)

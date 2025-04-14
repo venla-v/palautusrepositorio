@@ -64,21 +64,21 @@ const blogs = [
     }  
   ]
 
-  const empty = [
-    
-]
+    const empty = [
+      
+  ]
 
-test('return favorite', () => {
-    const result = listHelper.favoriteBlog(empty)
-    assert.deepStrictEqual(result, null)
-  })
-
-test('return favorite', () => {
-  const result = listHelper.favoriteBlog(blogs)
-  assert.deepStrictEqual(result, blogs[2])
+test('return author with most likes', () => {
+    const result = listHelper.mostLikes(empty)
+    assert.deepStrictEqual(result, { author: "", likes: 0 })
+})
+  
+test('return author with most likes', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    assert.deepStrictEqual(result, { author: "testaaja", likes: 5 })
 })
 
-test('return favorite', () => {
-    const result = listHelper.favoriteBlog(listWithOneBlog)
-    assert.deepStrictEqual(result, listWithOneBlog[0])
+test('return author with most likes', () => {
+  const result = listHelper.mostLikes(blogs)
+  assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 17 })
 })

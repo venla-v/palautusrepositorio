@@ -64,6 +64,15 @@ const blogs = [
     }  
   ]
 
+  const empty = [
+      
+  ]
+
+test('return author with most blogs', () => {
+  const result = listHelper.mostBlogs(empty)
+  assert.deepStrictEqual(result, { author: "", blogs: 0 })
+})
+
 test('return author with most blogs', () => {
   const result = listHelper.mostBlogs(blogs)
   assert.deepStrictEqual(result, { author: "Robert C. Martin", blogs: 3 })
