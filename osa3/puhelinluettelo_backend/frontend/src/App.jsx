@@ -85,23 +85,31 @@ const App = () => {
         number: newNumber
       }
 
-      personService.create(nameNumber).then((returnedNameNumber) => {
+      personService.create(nameNumber)
+      .then((returnedNameNumber) => {
         setPersons(persons.concat(returnedNameNumber))
         setNewName('')
         setNewNumber('')
       
         setMessage(`${returnedNameNumber.name} added`)
         setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+          setMessage(null)
+        }, 5000)
       })
       .catch(error => {
-        console.log(error.response.data)
-        setErrorMessage(`${JSON.stringify(error.response.data)}`)
+        console.log('errorkoodi:', error) 
+        console.log('Error responsen data:', error.response.data) 
+        console.log('error message:', error.response.data.error)
+
+        setErrorMessage(error.response.data.error)
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
         console.error('Error adding person:', error)
       })
   }}
 
+    
 
   const deletePerson = (id, person) => {
     console.log(id.name)

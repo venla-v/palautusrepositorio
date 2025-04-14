@@ -73,11 +73,14 @@ let persons = [
  
 
   app.get('/info', (request, response, next) => {
-    const nro = persons.length
-    const date = new Date()
-    response.send(`<p>Phonebook has info for ${nro} people</p>
+    Person.find().then(people => {
+      const nro = people.length
+      const date = new Date()
+      response.send(`<p>Phonebook has info for ${nro} people</p>
         <p>${date}</p>`)
-        .catch(error => next(error))
+      
+    })
+    
   })
   
   app.get('/api/persons/:id', (request, response, next) => {
@@ -122,10 +125,7 @@ let persons = [
   app.post('/api/persons', (request, response, next) => {
     const body = request.body
   
-    if (body.name.length < 3) {
-      console.log(body.name.length)
-      return response.status(400).json({ error: `name must be over` })
-    }
+    
 
     if (!body.name) {
       return response.status(400).json({ 
