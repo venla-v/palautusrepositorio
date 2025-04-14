@@ -31,8 +31,13 @@ const App = () => {
   useEffect(() => {
     personService.getAll().then(all => {
       setPersons(all)
+      console.log(persons)
     })
   }, [])
+
+  useEffect(() => {
+    console.log(persons)
+  }, [persons])
 
   const addNameNumber = (event) => {
     console.log(newName)
@@ -47,9 +52,15 @@ const App = () => {
       if (window.confirm(`${newName} is already added to phonebook. Want to replace the number?`)) {
         
         personService.update(found.id, { name: found.name, number: newNumber })
-        .then((newPerson) => {
-            const newPersons = persons.filter(person => person.id !== found.id);
-            setPersons(newPersons.concat(newPerson));
+        .then((updatedPerson) => {
+            console.log(updatedPerson)
+            
+            const updatedPersons = persons.map((person) =>
+              person.id === updatedPerson.id ? updatedPerson : person
+            );
+            setPersons(updatedPersons)
+            console.log('Updated person:', updatedPerson);
+            console.log('Old state:', persons);
             setNewName('')
             setNewNumber('')
             
@@ -65,7 +76,7 @@ const App = () => {
             setTimeout(() => {
               setErrorMessage(null)
             }, 5000)
-          });
+          })
       }
     }
     else {
@@ -78,32 +89,19 @@ const App = () => {
         setPersons(persons.concat(returnedNameNumber))
         setNewName('')
         setNewNumber('')
-      })
-      setMessage(`${newName} added`)
-      setTimeout(() => {
+      
+        setMessage(`${returnedNameNumber.name} added`)
+        setTimeout(() => {
         setMessage(null)
       }, 5000)
-      }
-  }
-
-  app.put('/api/persons/:id', (request, response, next) => {
-    const { name, number } = request.body
-  
-    const updatedPerson = {
-      name,
-      number,
-    }
-  
-    Person.findByIdAndUpdate(
-      request.params.id,
-      updatedPerson,
-      { new: true, runValidators: true, context: 'query' }
-    )
-      .then(updated => {
-        response.json(updated)
       })
-      .catch(error => next(error))
-  })
+      .catch(error => {
+        console.log(error.response.data)
+        setErrorMessage(`${JSON.stringify(error.response.data)}`)
+        console.error('Error adding person:', error)
+      })
+  }}
+
 
   const deletePerson = (id, person) => {
     console.log(id.name)
@@ -120,7 +118,11 @@ const App = () => {
     }, 5000)
   })
   .catch(error => {
-    console.error(error);
+    console.log(error.response.data)
+    setErrorMessage(`${JSON.stringify(error.response.data)}`)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000);
   });
   }
 }
@@ -159,6 +161,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
       {personsToShow.map(person => (
+        
         <Persons key={person.id} person={person} deletePerson={deletePerson} />
       ))}
       </ul>

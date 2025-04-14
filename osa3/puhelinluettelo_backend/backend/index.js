@@ -1,9 +1,10 @@
+require('dotenv').config()
 const express = require('express')
+const Person = require('./models/person')
 const morgan = require('morgan')
 const app = express()
 app.use(express.json())
 
-const Person = require('./models/person.js')
 app.use(express.static('dist'))
 
 
@@ -53,6 +54,22 @@ let persons = [
     })
     .catch(error => next(error))
   })
+
+  app.put('/api/persons/:id', (request, response, next) =>{
+    const body = request.body
+
+    const name = request.body.name
+    const number = request.body.number
+
+    Person.findByIdAndUpdate(request.params.id, { name, number }, { new: true})
+    .then(updatedPerson => {
+      if (!updatedPerson) {
+        return response.status(404).json({ error: 'Person not found' });
+      }
+      response.json(updatedPerson);
+    })
+    .catch(error => next(error));
+  })
  
 
   app.get('/info', (request, response, next) => {
@@ -82,10 +99,34 @@ let persons = [
     const personid = Math.floor(Math.random() * 10000)
     return String(personid)
   }
+
+  app.put('/api/persons/:id', (request, response, next) => {
+    const { name, number } = request.body
+  
+    Person.findById(request.params.id)
+      .then((person) => {
+        if (!person) {
+          return response.status(404).end()
+        }
+  
+        person.name = name
+        person.number = number
+  
+        return person.save().then((updatedPerson) => {
+          response.json(updatedPerson)
+        })
+      })
+      .catch((error) => next(error))
+  })
   
   app.post('/api/persons', (request, response, next) => {
     const body = request.body
   
+    if (body.name.length < 3) {
+      console.log(body.name.length)
+      return response.status(400).json({ error: `name must be over` })
+    }
+
     if (!body.name) {
       return response.status(400).json({ 
         error: 'name missing' 
@@ -112,11 +153,13 @@ let persons = [
       id: generateId(),
     })
     
-    person.save().then(savedPerson => {
+    person.save().then(savedPerson => 
             response.json(savedPerson)
+          ).catch(error => next(error))
           })
-          .catch(error => next(error))
-  })
+          
+  
+
 
   const errorHandler = (error, request, response, next) => {
     console.error(error.message)
@@ -126,6 +169,7 @@ let persons = [
     } else if (error.name === 'ValidationError') {
       return response.status(400).send({ error: error.message })
     }
+  
     next(error)
   }
   
@@ -133,7 +177,7 @@ let persons = [
   app.use(errorHandler)
 
   
-  const PORT = process.env.PORT || 3001
+  const PORT = process.env.PORT
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
