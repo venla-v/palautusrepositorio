@@ -10,25 +10,26 @@ console.log('connecting to', url)
 mongoose.connect(url)
   .then(result => {
     console.log('connected to MongoDB')
+    console.log(result)
   })
   .catch((error) => {
     console.log('error connecting to MongoDB:', error.message)
   })
 
-  const validate = function(number) {
-    const nroOsat = number.split('-')
+const validate = function(number) {
+  const nroOsat = number.split('-')
 
-    if (nroOsat.length !== 2){
-      return false
-    }
-    
-    if (nroOsat[0].length === 2 || nroOsat[0].length === 3) {
-      if (nroOsat[1].length >= 7){
-        return true
-      }
-    }
+  if (nroOsat.length !== 2){
     return false
   }
+
+  if (nroOsat[0].length === 2 || nroOsat[0].length === 3) {
+    if (nroOsat[1].length >= 7){
+      return true
+    }
+  }
+  return false
+}
 
 const personSchema = new mongoose.Schema({
   name: {

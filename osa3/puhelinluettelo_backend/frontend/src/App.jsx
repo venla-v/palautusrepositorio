@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 import Notification from './components/Notification'
 import Error from './components/Error'
@@ -33,7 +32,7 @@ const App = () => {
       setPersons(all)
       console.log(persons)
     })
-  }, [])
+  }, )
 
   useEffect(() => {
     console.log(persons)
@@ -69,6 +68,7 @@ const App = () => {
             }, 5000)
           })
           .catch(error => {
+            console.log(error)
             setErrorMessage(
               `Person '${newName}' was already removed from server`
             )
