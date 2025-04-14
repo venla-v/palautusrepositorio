@@ -59,8 +59,7 @@ const App = () => {
               person.id === updatedPerson.id ? updatedPerson : person
             );
             setPersons(updatedPersons)
-            console.log('Updated person:', updatedPerson);
-            console.log('Old state:', persons);
+            
             setNewName('')
             setNewNumber('')
             
@@ -129,9 +128,9 @@ const App = () => {
     console.log(error.response.data)
     setErrorMessage(`${JSON.stringify(error.response.data)}`)
     setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000);
-  });
+      setErrorMessage(null)              
+    }, 5000)
+  })
   }
 }
 

@@ -55,21 +55,6 @@ let persons = [
     .catch(error => next(error))
   })
 
-  app.put('/api/persons/:id', (request, response, next) =>{
-    const body = request.body
-
-    const name = request.body.name
-    const number = request.body.number
-
-    Person.findByIdAndUpdate(request.params.id, { name, number }, { new: true})
-    .then(updatedPerson => {
-      if (!updatedPerson) {
-        return response.status(404).json({ error: 'Person not found' });
-      }
-      response.json(updatedPerson);
-    })
-    .catch(error => next(error));
-  })
  
 
   app.get('/info', (request, response, next) => {

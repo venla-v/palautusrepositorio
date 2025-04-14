@@ -15,6 +15,21 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
+  const validate = function(number) {
+    const nroOsat = number.split('-')
+
+    if (nroOsat.length !== 2){
+      return false
+    }
+    
+    if (nroOsat[0].length === 2 || nroOsat[0].length === 3) {
+      if (nroOsat[1].length >= 7){
+        return true
+      }
+    }
+    return false
+  }
+
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -23,7 +38,11 @@ const personSchema = new mongoose.Schema({
   },
   number: {
     type: String,
-    required: true
+    required: true,
+    validate: {
+      validator: validate,
+      message: 'Phone number format is invalid. Correct format: "000-000000" or "00-000000"'
+    }
   }
 })
 
