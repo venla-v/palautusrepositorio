@@ -45,11 +45,11 @@ const App = () => {
     
     if (found) {
       if (window.confirm(`${newName} is already added to phonebook. Want to replace the number?`)) {
- 
+        
         personService.update(found.id, { name: found.name, number: newNumber })
-        .then((response) => {
+        .then((newPerson) => {
             const newPersons = persons.filter(person => person.id !== found.id);
-            setPersons(newPersons.concat(response.data));
+            setPersons(newPersons.concat(newPerson));
             setNewName('')
             setNewNumber('')
             
@@ -85,6 +85,25 @@ const App = () => {
       }, 5000)
       }
   }
+
+  app.put('/api/persons/:id', (request, response, next) => {
+    const { name, number } = request.body
+  
+    const updatedPerson = {
+      name,
+      number,
+    }
+  
+    Person.findByIdAndUpdate(
+      request.params.id,
+      updatedPerson,
+      { new: true, runValidators: true, context: 'query' }
+    )
+      .then(updated => {
+        response.json(updated)
+      })
+      .catch(error => next(error))
+  })
 
   const deletePerson = (id, person) => {
     console.log(id.name)
