@@ -142,6 +142,64 @@ test('apitest delete blog', async () => {
     assert.strictEqual(initialAmount-1, afterAmount)
 })
 
+test('apitest update blog', async () => {
+    const response = await api.get('/api/blogs')
+    const blogEdit = response.body[0]
+
+    const editedTitle = {
+        title: "edited",
+        author: blogEdit.author,
+        url: blogEdit.url,
+        likes: blogEdit.likes
+    }
+
+    const editedAuthor = {
+        title: blogEdit.title,
+        author: "edited",
+        url: blogEdit.url,
+        likes: blogEdit.likes
+    }
+
+    const editedUrl = {
+        title: blogEdit.title,
+        author: blogEdit.author,
+        url: "www.edited.com",
+        likes: blogEdit.likes
+    }
+
+    const editedLikes = {
+        title: blogEdit.title,
+        author: blogEdit.author,
+        url: blogEdit.url,
+        likes: 30000
+    }
+
+    const newTitle = await api
+        .put(`/api/blogs/${blogEdit.id}`)
+        .send(editedTitle)
+        .expect(200)
+
+    const newAuthor = await api
+        .put(`/api/blogs/${blogEdit.id}`)
+        .send(editedAuthor)
+        .expect(200)
+
+    const newUrl = await api
+        .put(`/api/blogs/${blogEdit.id}`)
+        .send(editedUrl)
+        .expect(200)
+
+    const newLikes = await api
+        .put(`/api/blogs/${blogEdit.id}`)
+        .send(editedLikes)
+        .expect(200)
+
+    assert.strictEqual(newTitle.body.title, editedTitle.title)
+    assert.strictEqual(newAuthor.body.author, editedAuthor.author)
+    assert.strictEqual(newUrl.body.url, editedUrl.url)
+    assert.strictEqual(newLikes.body.likes, editedLikes.likes)
+})
+
 
 after(async () => {
   await mongoose.connection.close()
