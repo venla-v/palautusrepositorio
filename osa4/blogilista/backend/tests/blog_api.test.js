@@ -71,7 +71,7 @@ test('apitest blog is added', async () => {
     await api
         .post('/api/blogs')
         .send(testBlog)
-        .expect(200)
+        .expect(201)
 
     const after = await api.get('/api/blogs')
     const afterAmount = after.body.length
@@ -100,9 +100,46 @@ test('apitest undefined likes returns 0', async () => {
     const response = await api
       .post('/api/blogs')
       .send(testBlog)
-      .expect(200)
+      .expect(201)
     
     assert.strictEqual(response.body.likes, 0)
+})
+
+test('apitest no title or no url returns 400', async () => {
+
+    const testBlogOne = {
+        title: "test test",
+        author: "testaaja",
+        likes: 3
+      }
+
+    const testBlogTwo = {
+        author: "testaaja",
+        url: "www.test.com",
+        likes: 3
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(testBlogOne)
+      .expect(400)
+    
+    await api
+      .post('/api/blogs')
+      .send(testBlogTwo)
+      .expect(400)
+})
+
+test('apitest delete blog', async () => {
+    const initial = await api.get('/api/blogs')
+    const initialAmount = initial.body.length
+
+    await api.delete(`/api/blogs/${initial.body[0].id}`).expect(204)
+
+    const after = await api.get('/api/blogs')
+    const afterAmount = after.body.length
+
+    assert.strictEqual(initialAmount-1, afterAmount)
 })
 
 
