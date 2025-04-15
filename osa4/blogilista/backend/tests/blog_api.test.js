@@ -57,6 +57,38 @@ test('apitest id is in correct format', async () => {
     assert.strictEqual(firstBlog._id, undefined)
 })
 
+test('apitest blog is added', async () => {
+    const initial = await api.get('/api/blogs')
+    const initialAmount = initial.body.length
+
+    const testBlog = {
+        title: "test test",
+        author: "testaaja",
+        url: "www.test.com",
+        likes: 3
+      }
+    
+    await api
+        .post('/api/blogs')
+        .send(testBlog)
+        .expect(200)
+
+    const after = await api.get('/api/blogs')
+    const afterAmount = after.body.length
+
+    const titleAfter = after.body[afterAmount-1].title
+    const authorAfter = after.body[afterAmount-1].author
+    const urlAfter = after.body[afterAmount-1].url
+    const likesAfter = after.body[afterAmount-1].likes
+
+    assert.strictEqual(afterAmount, initialAmount+1)
+    assert.strictEqual(titleAfter, "test test")
+    assert.strictEqual(authorAfter, "testaaja")
+    assert.strictEqual(urlAfter, "www.test.com")
+    assert.strictEqual(likesAfter, 3)
+    
+})
+
 
 after(async () => {
   await mongoose.connection.close()
