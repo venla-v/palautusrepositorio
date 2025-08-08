@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import Error from './components/Error'
+import BlogForm from './components/BlogForm'
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [blogsVisible, setBlogsVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -55,6 +57,21 @@ const App = () => {
     }, 5000)
   }
   }
+
+  const addBlog = (blogObject) => {
+      blogService
+        .create(blogObject)
+        .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+  
+        setBlogsVisible(false)  
+        
+      setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+      setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+      })
+  }
   
 
    const loginForm = () => (
@@ -91,60 +108,6 @@ const App = () => {
     </form>
     )
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>Title:<input
-        value={newBlogTitle}
-        onChange={handleBlogTitleChange}
-      /></div>
-      <div>Author:<input
-        value={newAuthor}
-        onChange={handeAuthorChange}
-      /></div>
-      <div>Url:<input
-        value={newUrl}
-        onChange={handeUrlChange}
-      /></div>
-      <button type="submit">create</button>
-    </form>  
-  )
-
-  const addBlog = (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: newBlogTitle,
-      author: newAuthor,
-      url: newUrl
-    }
-  
-    blogService
-      .create(blogObject)
-        .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setNewBlogTitle('')
-        setNewAuthor('')
-        setNewUrl('')
-
-      setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-      setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-      })
-      
-  }
-
-   const handleBlogTitleChange = (event) => {
-    setNewBlogTitle(event.target.value)
-  }
-
-   const handeAuthorChange = (event) => {
-    setNewAuthor(event.target.value)
-  }
-
-   const handeUrlChange = (event) => {
-    setNewUrl(event.target.value)
-  }
-
   if (user === null) {
     return (
     <div>
@@ -155,6 +118,25 @@ const App = () => {
     )
   }
 
+const blogForm = () => {
+    const hideWhenVisible = { display: blogsVisible ? 'none' : '' }
+    const showWhenVisible = { display: blogsVisible ? '' : 'none' }
+
+return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setBlogsVisible(true)}>new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <BlogForm createBlog={addBlog} />
+          <button onClick={() => setBlogsVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
+
+  
+
 
   return (
     <div>
@@ -162,13 +144,14 @@ const App = () => {
       <Notification message={message} />
       
       <div>{logoutForm()}</div>
-      <h2>create new</h2>
+
       {blogForm()}
+      <h2>create new</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   )
-}
 
+}
 export default App
