@@ -19,6 +19,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [blogsVisible, setBlogsVisible] = useState(false)
 
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -145,8 +146,9 @@ return (
       
       <div>{logoutForm()}</div>
 
-      {blogForm()}
       <h2>create new</h2>
+      {blogForm()}
+      
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
