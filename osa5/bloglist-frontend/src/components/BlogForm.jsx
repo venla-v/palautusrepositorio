@@ -5,6 +5,7 @@ const BlogForm = ({ createBlog }) => {
     const [newBlogTitle, setNewBlogTitle] = useState('')
     const [newAuthor, setNewAuthor] = useState('')
     const [newUrl, setNewUrl] = useState('')
+    const [newUser, setNewUser] = useState('')
 
 const addBlog = (event) => {
     event.preventDefault()
@@ -16,6 +17,7 @@ const addBlog = (event) => {
         setNewBlogTitle('')
         setNewAuthor('')
         setNewUrl('')
+
 }
 
   const handleBlogTitleChange = (event) => {
@@ -29,6 +31,7 @@ const addBlog = (event) => {
    const handeUrlChange = (event) => {
     setNewUrl(event.target.value)
   }
+
 
 
 return (

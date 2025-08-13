@@ -22,9 +22,10 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
     )  
   }, [])
+
 
   useEffect(() => {
   const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
@@ -57,6 +58,37 @@ const App = () => {
       setErrorMessage(null)
     }, 5000)
   }
+  }
+
+  const handleLikeChange = async (likedBlog) => {
+  const updatedBlog = {
+    id: likedBlog.id,
+    title: likedBlog.title,
+    author: likedBlog.author,
+    url: likedBlog.url,
+    user: likedBlog.user.id,
+    likes: likedBlog.likes + 1
+  }
+    
+  const returnedBlog = await blogService.update(likedBlog.id, updatedBlog)
+
+  setBlogs(blogs.map(blog =>{
+    console.log( likedBlog.user)
+        if (blog.id === likedBlog.id) {
+          return {
+          id: returnedBlog.id,
+          title: returnedBlog.title,
+          author: returnedBlog.author,
+          url: returnedBlog.url,
+          user: likedBlog.user,
+          likes: returnedBlog.likes
+        }} else {
+          return blog
+        }
+  }
+    ))
+    
+  
   }
 
   const addBlog = (blogObject) => {
@@ -123,6 +155,10 @@ const blogForm = () => {
     const hideWhenVisible = { display: blogsVisible ? 'none' : '' }
     const showWhenVisible = { display: blogsVisible ? '' : 'none' }
 
+
+
+    
+
 return (
       <div>
         <div style={hideWhenVisible}>
@@ -136,7 +172,6 @@ return (
     )
   }
 
-  
 
 
   return (
@@ -150,7 +185,7 @@ return (
       {blogForm()}
       
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLikeChange={handleLikeChange} />
       )}
     </div>
   )
