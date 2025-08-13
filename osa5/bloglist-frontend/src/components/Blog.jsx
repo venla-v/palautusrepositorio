@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 
-const Blog = ({ blog, handleLikeChange }) => {
+const Blog = ({ blog, handleLikeChange, deleteBlog }) => {
 const [infoVisible, setInfoVisible] = useState(false)
 
 const hideWhenVisible = { display: infoVisible ? 'none' : '' }
@@ -18,6 +18,7 @@ return (
          <div> {blog.url}</div>
          <div>likes: {blog.likes}<button onClick={() => handleLikeChange(blog)}>like </button></div>
          <div> {blog.user.name}</div>
+         <div><button onClick={() => deleteBlog(blog)}>remove</button></div>
         </div>
   </div>  
 )

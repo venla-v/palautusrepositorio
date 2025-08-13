@@ -60,6 +60,34 @@ const App = () => {
   }
   }
 
+
+  const deleteBlog = async (deletedBlog) => {
+
+    const deletedid = deletedBlog.id
+    const deletedUser = deletedBlog.user.username
+    const thisUser = user.username
+
+    console.log('logged-in user:', user)
+
+    console.log('deleteBlog triggered')
+    console.log(deletedUser)
+    console.log(thisUser)
+
+
+  if (window.confirm(`Remove blog ${deletedBlog.title} by ${deletedBlog.author}`)) {
+    if (deletedUser === thisUser) {  
+      await blogService.remove(deletedBlog.id)
+        blogService.getAll().then(blogs =>
+        setBlogs( blogs.filter(b => b.id.toString() !== deletedid) )
+      )  
+    } else {
+      console.log('not possible to delete other users blogs')
+    }
+  } else {
+    
+  }
+}
+
   const handleLikeChange = async (likedBlog) => {
   const updatedBlog = {
     id: likedBlog.id,
@@ -185,7 +213,7 @@ return (
       {blogForm()}
       
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeChange={handleLikeChange} />
+        <Blog key={blog.id} blog={blog} handleLikeChange={handleLikeChange} deleteBlog={deleteBlog}/>
       )}
     </div>
   )
