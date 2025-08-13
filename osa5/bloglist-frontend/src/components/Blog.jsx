@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 
-const Blog = ({ blog, handleLikeChange, deleteBlog }) => {
+const Blog = ({ blog, user, handleLikeChange, deleteBlog }) => {
 const [infoVisible, setInfoVisible] = useState(false)
 
 const hideWhenVisible = { display: infoVisible ? 'none' : '' }
@@ -18,10 +19,18 @@ return (
          <div> {blog.url}</div>
          <div>likes: {blog.likes}<button onClick={() => handleLikeChange(blog)}>like </button></div>
          <div> {blog.user.name}</div>
-         <div><button onClick={() => deleteBlog(blog)}>remove</button></div>
+          {user.username === blog.user.username && (
+     <button onClick={() => deleteBlog(blog)}>remove</button>)}
         </div>
   </div>  
 )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  handleLikeChange: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired
 }
 
 export default Blog

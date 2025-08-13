@@ -1,4 +1,5 @@
 import { useState} from 'react'
+import PropTypes from 'prop-types'
 
 
 const BlogForm = ({ createBlog }) => {
@@ -53,4 +54,6 @@ return (
     </form>  
   )
 }
+
+
 export default BlogForm

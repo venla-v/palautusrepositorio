@@ -213,7 +213,7 @@ return (
       {blogForm()}
       
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeChange={handleLikeChange} deleteBlog={deleteBlog}/>
+        <Blog key={blog.id} blog={blog} user={user} handleLikeChange={handleLikeChange} deleteBlog={deleteBlog}/>
       )}
     </div>
   )
