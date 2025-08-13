@@ -27,7 +27,7 @@ const update = (id, newObject) => {
 }
 
 const remove = (id, newObject) => {
-   const config = {
+  const config = {
     headers: { Authorization: token },
   }
   const request = axios.delete(`${ baseUrl }/${id}`, config)

@@ -1,41 +1,41 @@
-import { useState} from 'react'
-import PropTypes from 'prop-types'
+import { useState } from 'react'
+
 
 
 const BlogForm = ({ createBlog }) => {
-    const [newBlogTitle, setNewBlogTitle] = useState('')
-    const [newAuthor, setNewAuthor] = useState('')
-    const [newUrl, setNewUrl] = useState('')
-    const [newUser, setNewUser] = useState('')
+  const [newBlogTitle, setNewBlogTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
+  const [newUser, setNewUser] = useState('')
 
-const addBlog = (event) => {
+  const addBlog = (event) => {
     event.preventDefault()
     createBlog({
       title: newBlogTitle,
       author: newAuthor,
       url: newUrl
     })
-        setNewBlogTitle('')
-        setNewAuthor('')
-        setNewUrl('')
+    setNewBlogTitle('')
+    setNewAuthor('')
+    setNewUrl('')
 
-}
+  }
 
   const handleBlogTitleChange = (event) => {
     setNewBlogTitle(event.target.value)
   }
 
-   const handeAuthorChange = (event) => {
+  const handeAuthorChange = (event) => {
     setNewAuthor(event.target.value)
   }
 
-   const handeUrlChange = (event) => {
+  const handeUrlChange = (event) => {
     setNewUrl(event.target.value)
   }
 
 
 
-return (
+  return (
 
     <form onSubmit={addBlog}>
       <div>Title:<input
@@ -51,7 +51,7 @@ return (
         onChange={handeUrlChange}
       /></div>
       <button type="submit">create</button>
-    </form>  
+    </form>
   )
 }
 
