@@ -48,3 +48,38 @@ test('url, likes and user shown', async () => {
   expect(url).toBeDefined()
   expect(name).toBeDefined()
 })
+
+test('like button clicked twice', async () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    author: 'Test Aaja',
+    url: 'test.fi',
+    likes: 0,
+    user: {
+      username: 'tester',
+      name: 'tester'
+    }
+  }
+
+  const mockHandler = vi.fn()
+  const mockHandlerLikes = vi.fn()
+
+
+  render(<Blog blog={blog} author={'Test Aaja'} url={'test.fi'} likes={'0'} user={{ username: 'tester', name: 'tester' }}
+    setBlogsVisible={mockHandler} handleLikeChange={mockHandlerLikes}/>
+  )
+
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+  await user.click(button)
+  const button2 = screen.getByText('like')
+
+  await user.click(button2)
+  await user.click(button2)
+
+  //const url = screen.getByText('test.fi')
+  //const likes = screen.getByText('0')
+  //const name = screen.getByText('tester')
+
+  expect(mockHandlerLikes.mock.calls).toHaveLength(2)
+})
