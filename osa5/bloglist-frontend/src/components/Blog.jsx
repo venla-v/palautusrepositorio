@@ -11,13 +11,13 @@ const Blog = ({ blog, user, handleLikeChange, deleteBlog }) => {
 
   return (
     <div>
-      <div style={hideWhenVisible}>
+      <div data-testid="title_blogi" style={hideWhenVisible}>
         {blog.title} {blog.author}<button onClick={() => setInfoVisible(true)}>view</button>
       </div>
       {infoVisible && 
       <div style={showWhenVisible}>
         <div>{blog.title} {blog.author}<button onClick={() => setInfoVisible(false)}>hide</button></div>
-        <div> {blog.url}</div>
+        <div> {blog.url} </div>
         <div>likes: {blog.likes}<button onClick={() => handleLikeChange(blog)}>like </button></div>
         <div> {blog.user.name}</div>
         {user.username === blog.user.username && (
