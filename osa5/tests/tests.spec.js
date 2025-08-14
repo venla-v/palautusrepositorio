@@ -63,6 +63,20 @@ describe('When logged in', () => {
     await expect(page.getByTestId('title_blogi').last()).toContainText('otsikko kirjailija')
 
   })
+
+test('a new blog can be liked', async ({ page }) => {
+    await page.getByRole('button', { name: 'new blog' }).click()
+    await page.getByTestId('title').fill('otsikko')
+    await page.getByTestId('author').fill('kirjailija')
+    await page.getByTestId('url').fill('url-osoite')
+    await page.getByRole('button', { name: 'create' }).click()
+
+    await page.getByRole('button', { name: 'view' }).click()
+    await expect(page.getByTestId('likes')).toContainText('likes: 0')
+    await page.getByRole('button', { name: 'like' }).click()
+    await expect(page.getByTestId('likes')).toContainText('likes: 1')
+  })
+
 })
 
 })
