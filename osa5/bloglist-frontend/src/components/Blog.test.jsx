@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
+import BlogForm from './BlogForm'
 import userEvent from '@testing-library/user-event'
+
 
 test('renders content', () => {
   const blog = {
@@ -82,4 +84,44 @@ test('like button clicked twice', async () => {
   //const name = screen.getByText('tester')
 
   expect(mockHandlerLikes.mock.calls).toHaveLength(2)
+})
+
+
+test('url, likes and user shown', async () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    author: 'Test Aaja',
+    url: 'test.fi',
+    likes: 0,
+    user: {
+      username: 'tester',
+      name: 'tester'
+    }
+  }
+
+  const mockHandler = vi.fn()
+  const mockHandlerBlog = vi.fn()
+
+
+  render(<BlogForm blog={blog} author={'Test Aaja'} url={'test.fi'} likes={'0'} user={{ username: 'tester', name: 'tester' }}
+    setBlogsVisible={mockHandler} createBlog={mockHandlerBlog} deleteBlog={() => {}}/>
+  )
+
+  const user = userEvent.setup()
+
+  const testTitle = screen.getByPlaceholderText('title')
+  const testAuthor = screen.getByPlaceholderText('author')
+  const testUrl = screen.getByPlaceholderText('url')
+
+  await user.type(testTitle, 'Testiblogi' )
+  await user.type(testAuthor, 'Testaaja' )
+  await user.type(testUrl, 'testaus.fi' )
+
+  const button2 = screen.getByText('create')
+  await user.click(button2)
+
+  expect(mockHandlerBlog.mock.calls).toHaveLength(1)
+  expect(mockHandlerBlog.mock.calls[0][0].title).toBe('Testiblogi')
+  expect(mockHandlerBlog.mock.calls[0][0].author).toBe('Testaaja')
+  expect(mockHandlerBlog.mock.calls[0][0].url).toBe('testaus.fi')
 })
