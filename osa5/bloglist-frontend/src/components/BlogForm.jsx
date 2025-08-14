@@ -39,6 +39,7 @@ const BlogForm = ({ createBlog }) => {
 
     <form onSubmit={addBlog}>
       <div>Title:<input
+        data-testid='username'
         value={newBlogTitle}
         onChange={handleBlogTitleChange}
         placeholder='title'
