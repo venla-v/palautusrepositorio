@@ -122,8 +122,20 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+        const newBlog = {
+        id: returnedBlog.id,
+        title: returnedBlog.title,
+        author: returnedBlog.author,
+        url: returnedBlog.url,
+        likes: returnedBlog.likes,
+        user: {
+          username: user.username,
+          name: user.name,
+          id: user.id
+        }
+      }
 
+        setBlogs(blogs.concat(newBlog))
         setBlogsVisible(false)
 
         setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)

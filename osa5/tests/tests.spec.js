@@ -71,12 +71,26 @@ test('a new blog can be liked', async ({ page }) => {
     await page.getByTestId('url').fill('url-osoite')
     await page.getByRole('button', { name: 'create' }).click()
 
-    await page.getByRole('button', { name: 'view' }).click()
+    await page.getByRole('button', { name: 'view' }).last().click()
     await expect(page.getByTestId('likes')).toContainText('likes: 0')
-    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'like' }).last().click()
     await expect(page.getByTestId('likes')).toContainText('likes: 1')
   })
 
+
+
+test('a new blog can be deleted', async ({ page }) => {
+    await page.getByRole('button', { name: 'new blog' }).click()
+    await page.getByTestId('title').fill('otsikko')
+    await page.getByTestId('author').fill('kirjailija')
+    await page.getByTestId('url').fill('url-osoite')
+    await page.getByRole('button', { name: 'create' }).click()
+
+    await page.getByRole('button', { name: 'view' }).last().click()
+    await page.getByRole('button', { name: 'remove' }).last().click()
+
+    page.on('dialog', dialog => dialog.accept())
+  })
 })
 
 })
