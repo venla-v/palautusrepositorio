@@ -147,12 +147,63 @@ test('remove button only visible to user who added blog', async ({ page }) => {
     await page.getByTestId('username').fill('testinen')
     await page.getByTestId('password').fill('salainen')
     await page.getByRole('button', { name: 'login' }).click()
+    
+    await expect(page.getByText('Testaaja logged in')).toBeVisible()
 
     //avataan "view" ja oletetaan, että remove nappia ei näy
-    await page.getByRole('button', { name: 'view' }).last().click()
+    await page.getByRole('button', { name: 'view' }).click()
 
     await expect(page.getByRole('button', { name: 'remove' })).toHaveCount(0)
   
+  })
+
+  test('blogs are in order by likes', async ({ page }) => {
+    // lisätään kolme blogia
+    await page.getByRole('button', { name: 'new blog' }).click()
+    await page.getByTestId('title').fill('otsikko1')
+    await page.getByTestId('author').fill('kirjailija1')
+    await page.getByTestId('url').fill('url-osoite1')
+    await page.getByRole('button', { name: 'create' }).click()
+
+    await page.getByRole('button', { name: 'new blog' }).click()
+    await page.getByTestId('title').fill('otsikko2')
+    await page.getByTestId('author').fill('kirjailija2')
+    await page.getByTestId('url').fill('url-osoite2')
+    await page.getByRole('button', { name: 'create' }).click()
+
+    await page.getByRole('button', { name: 'new blog' }).click()
+    await page.getByTestId('title').fill('otsikko3')
+    await page.getByTestId('author').fill('kirjailija3')
+    await page.getByTestId('url').fill('url-osoite3')
+    await page.getByRole('button', { name: 'create' }).click()
+
+    const blog3 = page.getByTestId('title_blogi').filter({ hasText: 'otsikko3 kirjailija3' })
+    const blog1 = page.getByTestId('title_blogi').filter({ hasText: 'otsikko1 kirjailija1' })
+
+    //liketään blg3 viisi kertaa ja blog1 kaksi kertaa
+    await blog3.getByRole('button', { name: 'view' }).click()
+    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'hide' }).click()
+    
+    await blog1.getByRole('button', { name: 'view' }).click()
+    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'like' }).click()
+    await page.getByRole('button', { name: 'hide' }).click()
+
+    await page.reload()
+    await expect(page.getByText('otsikko1 kirjailija1')).toBeVisible()
+    await expect(page.getByText('otsikko2 kirjailija2')).toBeVisible()
+    await expect(page.getByText('otsikko3 kirjailija3')).toBeVisible()
+
+    const blogs = page.getByTestId('title_blogi')
+    
+    await expect(blogs.first()).toContainText('otsikko3 kirjailija3')
+    await expect(blogs.nth(1)).toContainText('otsikko1 kirjailija1')
+    await expect(blogs.last()).toContainText('otsikko2 kirjailija2')
   })
 
 })
